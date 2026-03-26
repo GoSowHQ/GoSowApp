@@ -12,6 +12,7 @@ import RewardTier from '@/components/projects/reward-tier';
 import CommentItem from '@/components/comments/comment-item';
 import BackersList from '@/components/projects/backers-list';
 import DonationModal from '@/components/funding/donation-modal';
+import ShareProject from '@/components/projects/share-project';
 
 export default function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const [slug, setSlug] = useState<string>('');
@@ -163,6 +164,8 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                   <h4 className="text-sm font-semibold mb-2">Backers</h4>
                   <BackersList projectId={project.id} />
                 </div>
+
+                <ShareProject project={project} />
               </aside>
             </div>
           </div>
