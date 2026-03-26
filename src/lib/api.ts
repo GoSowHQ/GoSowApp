@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backer-creator-backend-dev.up.railway.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backer-creator-backend.onrender.com/api';
 
 let accessToken: string | null = null;
 
