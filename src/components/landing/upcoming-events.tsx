@@ -5,6 +5,7 @@ import { Calendar, MapPin, Users, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
+import { api } from "@/lib/api";
 
 const EVENT_TYPE_LABELS: Record<string, string> = {
   HACKATHON: "Hackathon",
@@ -43,8 +44,7 @@ export default function UpcomingEvents() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api"}/events`)
-      .then((res) => res.json())
+    api<Event[]>('/events')
       .then((data) => {
         setEvents(Array.isArray(data) ? data.slice(0, 3) : []);
         setLoading(false);

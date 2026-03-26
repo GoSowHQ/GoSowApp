@@ -5,6 +5,7 @@ import { ArrowUpRight, Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { formatCurrency, daysLeft, percentFunded } from "@/lib/utils";
 import Link from "next/link";
+import { api } from "@/lib/api";
 
 const CATEGORY_LABELS: Record<string, string> = {
   AI_ML: "AI / ML",
@@ -72,8 +73,7 @@ export default function FeaturedProjects() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api"}/projects?limit=6`)
-      .then((res) => res.json())
+    api('/projects?limit=6')
       .then((data) => {
         setProjects(data.data || []);
         setLoading(false);

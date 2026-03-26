@@ -11,6 +11,7 @@ import { formatCurrency, percentFunded, daysLeft } from '@/lib/utils';
 import RewardTier from '@/components/projects/reward-tier';
 import CommentItem from '@/components/comments/comment-item';
 import BackersList from '@/components/projects/backers-list';
+import DonationModal from '@/components/funding/donation-modal';
 
 export default function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const [slug, setSlug] = useState<string>('');
@@ -22,6 +23,9 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
+  const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
+  const [donationAmount, setDonationAmount] = useState(50);
+  const [donationRewardId, setDonationRewardId] = useState<string | undefined>();
   const { user } = useAuthStore();
   const router = useRouter();
 
@@ -58,17 +62,11 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   const [showAmountBox, setShowAmountBox] = useState(false);
   const [customAmount, setCustomAmount] = useState<number | ''>('');
 
-  async function handleBack(amount: number, rewardId?: string) {
+  function handleBack(amount: number, rewardId?: string) {
     if (!user) return router.push('/auth/login');
-    try {
-      const res = await api('/funding/checkout', {
-        method: 'POST',
-        body: JSON.stringify({ projectId: project?.id, amount, rewardId }),
-      });
-      if (res && res.url) window.location.href = res.url;
-    } catch (err) {
-      alert('Failed to start checkout');
-    }
+    setDonationAmount(amount);
+    setDonationRewardId(rewardId);
+    setIsDonationModalOpen(true);
   }
 
   async function submitComment() {
@@ -191,6 +189,16 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
             </div>
           </div>
         </div>
+        
+        {project && (
+          <DonationModal 
+            project={project}
+            isOpen={isDonationModalOpen}
+            onClose={() => setIsDonationModalOpen(false)}
+            initialAmount={donationAmount}
+            initialRewardId={donationRewardId}
+          />
+        )}
       </main>
       <Footer />
     </>
