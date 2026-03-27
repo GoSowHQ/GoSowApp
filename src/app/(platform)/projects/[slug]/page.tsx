@@ -64,14 +64,14 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   const [customAmount, setCustomAmount] = useState<number | ''>('');
 
   function handleBack(amount: number, rewardId?: string) {
-    if (!user) return router.push('/auth/login');
+    if (!user) return router.push('/login');
     setDonationAmount(amount);
     setDonationRewardId(rewardId);
     setIsDonationModalOpen(true);
   }
 
   async function submitComment() {
-    if (!user) return router.push('/auth/login');
+    if (!user) return router.push('/login');
     if (!commentText.trim() || !project) return;
     try {
       await api(`/projects/${project.id}/comments`, { method: 'POST', body: JSON.stringify({ content: commentText }) });
@@ -84,9 +84,30 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   }
 
   if (loading) return (
-    <div>
+    <div className="animate-pulse">
       <Navbar />
-      <main className="pt-24 px-6 max-w-4xl mx-auto">Loading...</main>
+      <main className="pt-24 pb-16">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="bg-white rounded-2xl p-8 shadow-sm">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex-1 space-y-4">
+                <div className="h-10 w-3/4 bg-gray-200 rounded-lg" />
+                <div className="h-4 w-1/4 bg-gray-100 rounded-lg" />
+                <div className="h-32 w-full bg-gray-50 rounded-lg" />
+                <div className="h-8 w-40 bg-gray-200 rounded-lg mt-8" />
+                <div className="space-y-3">
+                  {[1, 2, 3].map(i => <div key={i} className="h-20 w-full bg-gray-50 rounded-lg" />)}
+                </div>
+              </div>
+              <aside className="w-full md:w-80 space-y-4">
+                <div className="h-40 w-full bg-gray-100 rounded-lg" />
+                <div className="h-24 w-full bg-gray-50 rounded-lg" />
+                <div className="h-48 w-full bg-gray-50 rounded-lg" />
+              </aside>
+            </div>
+          </div>
+        </div>
+      </main>
       <Footer />
     </div>
   );
@@ -181,7 +202,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                 </div>
               </div>
             ) : (
-              <div className="text-sm text-gray-500 mb-4">Please <a href="/auth/login" className="text-[#7ED957]">login</a> to comment.</div>
+              <div className="text-sm text-gray-500 mb-4">Please <a href="/login" className="text-[#7ED957]">login</a> to comment.</div>
             )}
 
             <div className="space-y-4">

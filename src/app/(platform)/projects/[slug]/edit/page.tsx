@@ -35,7 +35,7 @@ export default function EditProject({ params }: { params: { slug: string } }) {
 
   async function save(e: any) {
     e.preventDefault();
-    if (!user || !project) return router.push('/auth/login');
+    if (!user || !project) return router.push('/login');
     try {
       await api(`/projects/${project.id}`, { method: 'PATCH', body: JSON.stringify({ title, shortDescription, goalAmount: goal }) });
       router.push(`/projects/${project.slug}`);

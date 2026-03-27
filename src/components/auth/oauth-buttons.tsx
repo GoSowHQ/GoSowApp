@@ -1,6 +1,6 @@
 "use client";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backer-creator-backend.onrender.com/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backend-lrq2.onrender.com/api';
 
 export default function OAuthButtons() {
   return (

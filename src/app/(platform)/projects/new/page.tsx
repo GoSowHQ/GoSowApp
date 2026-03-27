@@ -40,7 +40,7 @@ export default function NewProjectPage() {
   };
 
   async function handleCreate() {
-    if (!user) return router.push('/auth/login');
+    if (!user) return router.push('/login');
     try {
       const p = await api('/projects', {
         method: 'POST',
@@ -69,7 +69,7 @@ export default function NewProjectPage() {
              </div>
              <h2 className="text-2xl font-bold text-gray-900 mb-2">Ready to launch?</h2>
              <p className="text-gray-500 mb-8">Sign in to GoSOW to start building your tech project and reach thousands of backers.</p>
-             <button onClick={() => router.push('/auth/login')} className="w-full py-3 bg-[#7ED957] text-white rounded-xl font-semibold hover:bg-[#6ec04a] transition-colors">
+             <button onClick={() => router.push('/login')} className="w-full py-3 bg-[#7ED957] text-white rounded-xl font-semibold hover:bg-[#6ec04a] transition-colors">
                Sign in to Continue
              </button>
           </div>

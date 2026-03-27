@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backer-creator-backend.onrender.com/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://backend-lrq2.onrender.com/api';
 
 let accessToken: string | null = null;
 
@@ -45,9 +45,11 @@ async function refreshAccessToken(): Promise<boolean> {
       body: JSON.stringify({ refreshToken }),
     });
     if (!res.ok) return false;
-    const data = await res.json();
-    setAccessToken(data.accessToken);
-    setRefreshToken(data.refreshToken);
+    const result = await res.json();
+    if (!result.success) return false;
+    
+    setAccessToken(result.data.accessToken);
+    setRefreshToken(result.data.refreshToken);
     return true;
   } catch {
     return false;
@@ -71,7 +73,7 @@ export async function api<T = any>(
 
   let res = await fetch(url, { ...options, headers });
 
-  // If 401, try refreshing the token
+  // Handle 401 Unauthorized - try refreshing the token
   if (res.status === 401 && token) {
     const refreshed = await refreshAccessToken();
     if (refreshed) {
@@ -80,10 +82,16 @@ export async function api<T = any>(
     }
   }
 
-  if (!res.ok) {
-    const error = await res.json().catch(() => ({ message: 'Request failed' }));
-    throw new Error(error.message || `HTTP ${res.status}`);
+  const result = await res.json().catch(() => ({ 
+    success: false, 
+    message: 'Invalid response from server' 
+  }));
+
+  if (!res.ok || result.success === false) {
+    throw new Error(result.message || `HTTP ${res.status}`);
   }
 
-  return res.json();
+  // The backend now returns { success: true, data: T, message: string }
+  // We return only the data part to match existing usage in the frontend
+  return result.data;
 }

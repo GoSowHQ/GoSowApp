@@ -18,7 +18,7 @@ export default function ShareProject({ project }: Props) {
   const baseUrl =
     typeof window !== 'undefined'
       ? window.location.origin
-      : process.env.NEXT_PUBLIC_SITE_URL || 'https://backer-creator-dev.up.railway.app';
+      : process.env.NEXT_PUBLIC_SITE_URL || 'https://gosow-dev.up.railway.app';
 
   const shareUrl = `${baseUrl}/projects/${project.slug}`;
   const shareText = `Check out "${project.title}" on GoSOW — support this amazing tech project! 🚀`;
